@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: chooseyourpath
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:chooseyourpath}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  cache:
+    type: simple
+
+server:
+  port: 8080
+
+app:
+  cors:
+    # Frontend URLs allowed to access the backend during local development
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:5176}
+
+  jwt:
+    # Local development JWT secret
+    secret: "ChooseYourPathLocalDevelopmentSecretKey2026ChooseYourPath"
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+logging:
+  level:
+    root: INFO
+    com.chooseyourpath: DEBUG
+  file:
+    name: logs/chooseyourpath.log
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,cache
+
+  endpoint:
+    health:
+      show-details: when_authorized
